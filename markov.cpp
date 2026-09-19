@@ -2,10 +2,9 @@
 #include <fstream>
 #include <markov.h>
 
-using namespace std;
-string joinWords(const std::string words[], int startIndex, int count) {
+std::string joinWords(const std::string words[], int startIndex, int count) {
 
-    string result = "";
+    std::string result = "";
     for (int i = 0; i <= count - 1; i++) {
 
         //add words to result
@@ -21,7 +20,7 @@ string joinWords(const std::string words[], int startIndex, int count) {
 };
 
 int readWordsFromFile(std::string filename, std::string words[], int maxWords) {
-    fstream file(filename);
+    std::fstream file(filename);
 
     if (file.is_open()) {
 
@@ -33,7 +32,8 @@ int readWordsFromFile(std::string filename, std::string words[], int maxWords) {
         file.close();
         return counter;
 
-    } else {
+    } 
+    else {
         return -1;
     }
 };
@@ -49,15 +49,77 @@ int buildMarkovChain(const std::string words[], int numWords, int order,
     int i = 0;
     int count = 0;
     while ((i < numWords - order) && (i < maxChainSize)) {
-        string prefix = joinWords(words, i, order);
+        std::string prefix = joinWords(words, i, order);
         prefixes[count] = prefix;
 
-        string suffix = words[i + order];
+        std::string suffix = words[i + order];
         suffixes[count] = suffix;
 
         count += 1;
         i += 1;
     }
 
+};
+
+std::string getRandomSuffix(const std::string prefixes[], const std::string suffixes[],
+                            int chainSize, std::string currentPrefix) {
+    
+    int matchCount = 0;
+    for (int i = 0; i < chainSize; i++) {
+        if (prefixes[i] == currentPrefix) {
+            matchCount += 1;
+        }
+    }
+    
+    if (matchCount == 0) {
+        return "";
+    }
+
+    int pick = rand() % matchCount;
+
+    int counterForMatches = 0;
+
+    for (int i = 0; i < chainSize; i++) {
+        if (prefixes[i] == currentPrefix) {
+           counterForMatches += 1;
+        }
+
+        //Might be wrong check later
+        if (counterForMatches - 1 == pick) {
+            return suffixes[pick];
+        }
+    }
+
+    return "";
+};
+
+
+std::string getRandomPrefix(const std::string prefixes[], int chainSize) {
+    if (chainSize <= 0) {
+        return "";
+    }
+
+    int index = rand() % chainSize;
+    return prefixes[index];
+
+};
+
+
+std::string generateText(const std::string prefixes[], const std::string suffixes[],
+                         int chainSize, int order, int numWords) {
+
+    if ((chainSize <= 0) || (numWords < order)) {
+        return "";
+    } 
+    else if (order < 1 || order > 3) {
+        return "";
+    }
+
+    std::string currentPrefix = getRandomPrefix(prefixes, chainSize);
+    std::string resultString = currentPrefix;
+
+    
+    
+    
 };
 
