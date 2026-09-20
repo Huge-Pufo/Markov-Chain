@@ -5,7 +5,7 @@
 std::string joinWords(const std::string words[], int startIndex, int count) {
 
     std::string result = "";
-    for (int i = 0; i <= count - 1; i++) {
+    for (int i = 0; i < count; i++) {
 
         //add words to result
         result += words[startIndex + i];
@@ -20,7 +20,7 @@ std::string joinWords(const std::string words[], int startIndex, int count) {
 };
 
 int readWordsFromFile(std::string filename, std::string words[], int maxWords) {
-    std::fstream file(filename);
+    std::ifstream file(filename);
 
     if (file.is_open()) {
 
@@ -87,7 +87,7 @@ std::string getRandomSuffix(const std::string prefixes[], const std::string suff
 
         //Might be wrong check later
         if (counterForMatches - 1 == pick) {
-            return suffixes[pick];
+            return suffixes[i];
         }
     }
 
