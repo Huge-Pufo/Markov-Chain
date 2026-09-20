@@ -48,7 +48,7 @@ int buildMarkovChain(const std::string words[], int numWords, int order,
 
     int i = 0;
     int count = 0;
-    while ((i < numWords - order) && (i < maxChainSize)) {
+    while ((i < numWords - order) && (count < maxChainSize)) {
         std::string prefix = joinWords(words, i, order);
         prefixes[count] = prefix;
 
@@ -59,6 +59,7 @@ int buildMarkovChain(const std::string words[], int numWords, int order,
         i += 1;
     }
 
+    return count;
 };
 
 std::string getRandomSuffix(const std::string prefixes[], const std::string suffixes[],
@@ -117,9 +118,39 @@ std::string generateText(const std::string prefixes[], const std::string suffixe
 
     std::string currentPrefix = getRandomPrefix(prefixes, chainSize);
     std::string resultString = currentPrefix;
+    
+    std::string currentWords[3]; // supports the validated orders 1, 2, and 3
+    int wordIndex = 0;                                                                                                                                                                 
+    std::string temp = "";
+    for (int i = 0; i < currentPrefix.length(); i++) {                                                                                                                                 
+        if (currentPrefix[i] == ' ') {                                                                                                                                                 
+            currentWords[wordIndex] = temp;                                                                                                                                            
+            wordIndex++;                                                                                                                                                               
+            temp = "";                 
+        } else {                                                                                                                                                                       
+            temp += currentPrefix[i];  
+        }
+    }
 
-    
-    
+    currentWords[wordIndex] = temp; // don't forget the last word
+    std::string newWord;
+
+    for (int i = 0; i <= numWords - order; i++) {
+        newWord = getRandomSuffix(prefixes, suffixes, chainSize, currentPrefix);
+
+        if (newWord == "") {
+            break;
+        }
+
+        resultString += " " + newWord;
+    }
+
+    for (int j = 0; j < order - 1; j++) {
+        currentWords[j] = currentWords[j + 1];
+    }
+    currentWords[order - 1] = newWord;
+    currentPrefix = joinWords(currentWords, 0, order);
+    return currentPrefix;
     
 };
 
