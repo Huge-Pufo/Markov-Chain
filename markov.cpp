@@ -1,6 +1,7 @@
+#include "markov.h"
 #include <iostream>
 #include <fstream>
-#include <markov.h>
+#include <cstdlib>
 
 std::string joinWords(const std::string words[], int startIndex, int count) {
 
