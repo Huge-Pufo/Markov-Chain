@@ -28,6 +28,8 @@ int main() {
         std::cout << getRandomSuffix(prefixes, suffixes, chainSize, "the") << std::endl;
     }
 
+    std::string output = generateText(prefixes, suffixes, chainSize, 1, 20);
+    std::cout << output << std::endl;
 
 
     return 0;
