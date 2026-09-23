@@ -124,7 +124,7 @@ std::string generateText(const std::string prefixes[], const std::string suffixe
     int wordIndex = 0;                                                                                                                                                                 
     std::string temp = "";
     //splits prefix into words in currentWords
-    for (int i = 0; i < currentPrefix.length(); i++) {                                                                                                                                 
+    for (int i = 0; i < (int)currentPrefix.length(); i++) {                                                                                                                                 
         if (currentPrefix[i] == ' ') {                                                                                                                                                 
             currentWords[wordIndex] = temp;                                                                                                                                            
             wordIndex++;                                                                                                                                                               
