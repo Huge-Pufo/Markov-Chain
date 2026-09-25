@@ -6,10 +6,35 @@
 int main() {
 
     srand(time(0));
+    int const MAX_WORDS  = 5000;
 
     std::string fileName;
     std::cout << "Enter input filename: ";
     std::getline(std::cin, fileName);
+
+    int order;
+    std::cout << "Enter order (1,2, or 3): ";
+    std::cin >> order;
+
+    int maxNumOfWords;
+    std::cout << "Enter maximum number of words: ";
+    std::cin >> maxNumOfWords;
+
+    while (std::cin.fail()) {
+        std::cin.clear();
+        std::cin.ignore();
+        std::cout << "Maximum number of words only accepts an integer as input.\n";
+        std::cout << "Enter maximum number of words: ";
+        std::cin >> maxNumOfWords;
+    }
+    while (maxNumOfWords < order) {
+        std::cin.clear();
+        std::cin.ignore();
+        std::cout << "Maximum number of words must be greater than or equal to 'order'.\n";
+        std::cout << "Enter maximum number of words: ";
+        std::cin >> maxNumOfWords;
+    }
+
 
     std::string testWords[] = {"the", "cat", "sat", "down"};
     std::cout << joinWords(testWords, 0, 2) << std::endl;
