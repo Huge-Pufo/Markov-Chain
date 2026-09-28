@@ -9,13 +9,26 @@ int main() {
     srand(time(0));
     int const MAX_WORDS  = 5000;
 
+    std::string words[MAX_WORDS];
+    std::string prefixes[MAX_WORDS];
+    std::string suffixes[MAX_WORDS];
+    
     std::string fileName;
-    std::cout << "Enter input filename: ";
-    std::getline(std::cin, fileName);
+    int count;
+    while (true) {
+        std::cout << "Enter the file name: ";
+        std::getline(std::cin, fileName);
+        count = readWordsFromFile(fileName, words, MAX_WORDS);
 
-    int order;
-    std::cout << "Enter order (1,2, or 3): ";
-    std::cin >> order;
+        if (count != -1) {
+            break;
+        }
+        else {
+            std::cout << "Unable to open file\n";
+            std::cout << "Double check file name or extension.\n";
+        }
+    }
+
 
     int maxNumOfWords;
     while (true) {
@@ -40,13 +53,38 @@ int main() {
         }
     }
 
-
-    while (maxNumOfWords < order) {
-        std::cin.clear();
-        std::cin.ignore();
-        std::cout << "Maximum number of words must be greater than or equal to 'order'.\n";
-        std::cout << "Enter maximum number of words: ";
-        std::cin >> maxNumOfWords;
+    int order;
+    while (true) {
+        std::cout << "Enter the order (1, 2 or 3): ";
+        if (std::cin >> order) {
+            if (std::cin.peek() == '\n') {
+                if (order < 1 || order > 3) {
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cout << "Enter a number between 1 and 3\n";
+                }
+                else if (order > maxNumOfWords) {
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cout << "order must not exceed the maximum number of words\n";
+                }
+                else {
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    break;
+                }
+            }
+            else {
+                std::cout << "Please enter only integers.\n";
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            }
+        }
+        else {
+            std::cout << "Please enter only integers.\n";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
     }
 
 
