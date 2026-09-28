@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <limits>
 
 int main() {
 
@@ -17,16 +18,29 @@ int main() {
     std::cin >> order;
 
     int maxNumOfWords;
-    std::cout << "Enter maximum number of words: ";
-    std::cin >> maxNumOfWords;
-
-    while (std::cin.fail()) {
-        std::cin.clear();
-        std::cin.ignore();
-        std::cout << "Maximum number of words only accepts an integer as input.\n";
+    while (true) {
         std::cout << "Enter maximum number of words: ";
-        std::cin >> maxNumOfWords;
+        //claude helped me here
+        if (std::cin >> maxNumOfWords) {
+            if (std::cin.peek() == '\n') {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                break;
+            }
+            else {
+                std::cout << "Please enter only integers.\n";
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            }
+        }
+        else {
+            std::cout << "Please enter only integers.\n";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
     }
+
+
     while (maxNumOfWords < order) {
         std::cin.clear();
         std::cin.ignore();
