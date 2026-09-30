@@ -68,11 +68,6 @@ int main() {
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                     std::cout << "order must not exceed the maximum number of words\n";
                 }
-                else if (order >= count) {
-                    std::cin.clear();
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    std::cout << "At least order + 1 training words are needed\n";
-                } 
                 else {
                     std::cin.clear();
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -92,14 +87,37 @@ int main() {
         }
     }
 
-    int chainSize = buildMarkovChain(words, maxNumOfWords, order, prefixes, suffixes, MAX_WORDS);
-    if (count == 5000) {
-        std::cout << "at most " << MAX_WORDS << " input words were used and additional words, if any, were ignored.\n";
+    if (count <= order) {
+        std::cout << "At least order + 1 training words are needed.\n";
+        return 1;
+    }
+
+    int chainSize = buildMarkovChain(words, count, order, prefixes, suffixes, MAX_WORDS);
+
+    if (chainSize <= 0) {
+        return 2;
     }
 
     std::string resultString = generateText(prefixes, suffixes, chainSize, order, maxNumOfWords);
 
+    int wordsGenerated = 0;
+    for (int i = 0; i < (int)resultString.length(); i++) {
+        if (resultString[i] == ' ') {
+            wordsGenerated += 1;
+        }
+    }
+    wordsGenerated++; // Plus the last word
+
+    if (count == 5000) {
+        std::cout << "at most " << MAX_WORDS << " input words were used and additional words, if any, were ignored.\n";
+    }
+
     std::cout << resultString;
+    std::cout << wordsGenerated << " words were generated.\n";
+
+    if (wordsGenerated < maxNumOfWords) {
+        std::cout << "Generation stopped at a dead end.\n";
+    }
 
     /* INITIAL TESTING
 

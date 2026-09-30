@@ -146,20 +146,13 @@ std::string generateText(const std::string prefixes[], const std::string suffixe
         }
 
         resultString += " " + newWord;
+
+        //updates currentwords to the new prefixes
+        for (int j = 0; j < order - 1; j++) {
+            currentWords[j] = currentWords[j + 1];
+        }
+        currentWords[order - 1] = newWord;
         
-        //updates currentwordss to the new prefixes
-        if (order == 1) {
-            currentWords[0] = newWord;
-        }
-        else if (order == 2) {
-            currentWords[0] = currentWords[1];
-            currentWords[1] = newWord;
-        }
-        else {
-            currentWords[0] = currentWords[1];
-            currentWords[1] = currentWords[2];
-            currentWords[2] = newWord;
-        }
 
         currentPrefix = joinWords(currentWords, 0, order);
     }
